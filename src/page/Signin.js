@@ -39,7 +39,7 @@ const Signin=()=>{
     
     
     return (<div className="container">
-        <h2>Login</h2>
+        <h2>Admin Login</h2>
         <form onSubmit={submitForm}>
         <div className="mb-3">
         <label htmlFor="email" className="form-label">Username</label>

@@ -7,7 +7,7 @@ import Home from './page/Home';
 import Student from './page/Student';
 import StudentRecord from './page/StudentRecord';
 import Update from './page/Update';
-
+import Studentlogin from './page/Studentlogin'
 
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
       <Route path='/signin' element={<Student></Student>}></Route>
       <Route path="/student" element={<StudentRecord></StudentRecord>}></Route>
       <Route path="/update" element={<Update></Update>}></Route>
+      <Route path="studentlogin" element={<Studentlogin></Studentlogin>}></Route>
     </Routes>
 
 

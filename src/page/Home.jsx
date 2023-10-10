@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { BASE_URL, myAxios } from "../services/helper";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css"
-
+import '../page/TableComponent.css';
 import Update from "./Update";
 import { useNavigate } from "react-router-dom";
 //import { useNavigate } from "react-router-dom";
@@ -57,6 +57,7 @@ setmes(res.data);
     return ( <>
     <div className="container">
 <h1>Student Record</h1>
+<div className="TableComponent">
 <table className="table table-boarded">
 <thead>
           <tr>
@@ -74,7 +75,7 @@ setmes(res.data);
             
             {data.map((item)=>(
                 <tr key={item.id}>
-                    <td>{item.id}</td>
+                    <td style={{alignItems:"center"}}>{item.id}</td>
 <td>{item.firstname}</td>
               <td>{item.lastname}</td>
               <td>{item.email}</td>
@@ -85,7 +86,7 @@ setmes(res.data);
                 </tr>
             ))}
         </tbody>
-</table>
+</table></div>
     </div>
     
     </> );

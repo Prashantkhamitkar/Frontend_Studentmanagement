@@ -6,23 +6,35 @@ import { useNavigate } from 'react-router-dom';
 
 const Student=()=> 
  {
+  const [filedata,setfiledata]=useState(null)
     const navigate=useNavigate();
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
     email: '',
     mobilenumber:'',
-    password:''
+    password:'',
   });
-const [filedata,setfiledata]=useState();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+const filehandleChange=(e)=>{
+  setfiledata(e.target.files[0])
+}
   const handleSubmit = (e) => {
     e.preventDefault();
-Studentsignup(formData).then((res)=>{console.log(res.data)
+    const datas=new FormData();
+    //formdata is interface which have methods append 
+    
+    datas.append('firstname', formData.firstname);
+    datas.append('lastname', formData.lastname);
+    datas.append('email', formData.email);
+    datas.append('mobilenumber', formData.mobilenumber);
+    datas.append('password', formData.password);
+    datas.append('file', filedata);
+Studentsignup(datas).then((res)=>{console.log(res.data)
 navigate("/student")
 }
 );
@@ -35,7 +47,7 @@ navigate("/student")
   return (
     <div className='container'>
       <h2>Student Signup</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="form-group">
           <label htmlFor="firstname">First Name</label>
           <input
@@ -103,10 +115,7 @@ navigate("/student")
             className="form-control"
             id="file"
             name="file"
-            value={filedata}
-            onChange={(e)=>{
-              setfiledata(e.target.value)
-            }}
+            onChange={filehandleChange}
             required
           />
         </div>

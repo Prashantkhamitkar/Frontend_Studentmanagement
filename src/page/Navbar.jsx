@@ -54,8 +54,9 @@ export default function App() {
                 <MDBDropdownMenu>
                   <MDBDropdownItem link onClick={()=>{
                     navigate("/")
-                  }}>Login</MDBDropdownItem>
-                  <MDBDropdownItem link>Another action</MDBDropdownItem>
+                  }}>Admin Login</MDBDropdownItem>
+                  <MDBDropdownItem link onClick={()=>
+                  navigate("/studentlogin")}>Student Login</MDBDropdownItem>
                   <MDBDropdownItem link>Something else here</MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
