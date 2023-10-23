@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import Navbar from './page/Navbar';
+import Carosal from './page/Carosal';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -11,6 +13,7 @@ root.render(
     
   <BrowserRouter>
   <Navbar></Navbar>
+  {/* <Carosal></Carosal> */}
   <App />
   </BrowserRouter>
     

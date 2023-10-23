@@ -119,6 +119,8 @@ navigate("/student")
             required
           />
         </div>
+        <br></br>
+<br></br>
         <button type="submit" className="btn btn-primary">
           Sign Up
         </button>

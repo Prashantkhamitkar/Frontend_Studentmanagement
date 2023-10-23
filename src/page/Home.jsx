@@ -5,6 +5,11 @@ import "../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import '../page/TableComponent.css';
 import Update from "./Update";
 import { useNavigate } from "react-router-dom";
+import "../../node_modules/react-toastify/dist/ReactToastify.css"
+import { toast,ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
+import Signin from "./Signin";
+
 //import { useNavigate } from "react-router-dom";
 function Home() {
     const imgurl=`${BASE_URL}/student/image`
@@ -20,12 +25,21 @@ function Home() {
    const [mes,setmes]=useState('');
    const [data,setdata]=useState([]);
 useEffect(()=>{
-myAxios.get("/student/").then((response)=>
+    const axiodata=JSON.parse(sessionStorage.getItem("config"));
+myAxios.get("/student/",axiodata).then((response)=>{
 setdata(response.data)
-).catch((error)=>console.log(error));
+toast.success("data fetching ")
+
+}
+).catch((error)=>{
+    toast.error("not failed")
+    console.log(error)
+   
+}
+);
 },[])
 useEffect(()=>{
-    myAxios.get("/admin/").then((response)=>
+    myAxios.get("/student/").then((response)=>
     setdata(response.data)
     ).catch((error)=>console.log(error));
     },[mes]);
@@ -47,15 +61,19 @@ navigate("/update")
 
 const deleteitem=(id)=>{
 console.log(id);
-myAxios.delete(`admin/${id}`).then((res)=>{
+myAxios.delete(`student/${id}`).then((res)=>{
 console.log(res.data)
 setmes(res.data);
 }
-).catch((err)=>console.log(err));
+).catch((err)=>{console.log(err)
+    setmes(err);
+});
 
 }
-    return ( <>
-    <div className="container">
+if(sessionStorage.getItem("isloggedin"))
+return ( <>
+
+    (<div className="container">
 <h1>Student Record</h1>
 <div className="TableComponent">
 <table className="table table-boarded">
@@ -80,16 +98,18 @@ setmes(res.data);
               <td>{item.lastname}</td>
               <td>{item.email}</td>
               <td>{item.mobilenumber}</td>
-              <td><img src={`${imgurl}/${item.imagename}`} alt="student image" style={{width:"100px",height:"100px",objectFit:"cover"}}></img></td>
-              <td><button onClick={()=>deleteitem(item.stdid)} className="btn btn-danger">Delete</button></td>
-              <td><button onClick={()=>updateitem(item.stdid)} className="btn btn-info">Update</button></td>
+              <td><img src={`${imgurl}/${item.imagename}`} alt="student image" style={{width:"100px",height:"100px",objectFit:"cover",borderRadius:"50%"}}></img></td>
+              <td><button onClick={()=>deleteitem(item.id)} className="btn btn-danger">Delete</button></td>
+              <td><button onClick={()=>updateitem(item.id)} className="btn btn-info">Update</button></td>
                 </tr>
             ))}
         </tbody>
 </table></div>
     </div>
-    
+    <ToastContainer></ToastContainer>)
     </> );
+    else
+    return(<Signin></Signin>)
 }
 
 export default Home;

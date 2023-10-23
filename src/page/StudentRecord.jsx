@@ -1,5 +1,6 @@
 import { useState ,useEffect} from "react";
 import { BASE_URL, myAxios } from "../services/helper";
+
 const StudentRecord=()=>{
 const url=BASE_URL;
 const imgurl=`${url}/student/image`;
@@ -35,11 +36,13 @@ const imgurl=`${url}/student/image`;
                   <td>{item.lastname}</td>
                   <td>{item.email}</td>
                   <td>{item.mobilenumber}</td>
-                  <td><img src={`${imgurl}/${item.imagename}`} alt="student image" style={{width:"100px",height:"100px",objectFit:"cover"}}></img></td>
+                  <td><img src={`${imgurl}/${item.imagename}`} alt="student image" style={{width:"100px",height:"100px",objectFit:"cover",borderRadius:"50%"}}></img></td>
                     </tr>
                 ))}
             </tbody>
     </table>
-        </div>)
+        </div>
+        
+        )
 }
 export default StudentRecord;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
@@ -16,15 +16,24 @@ import {
   MDBCollapse,
 } from 'mdb-react-ui-kit';
 import { useNavigate } from 'react-router-dom';
+import { myAxios } from '../services/helper';
 
 export default function App() {
   const navigate=useNavigate();
+const [cdata,setdata]=useState([]);
+useEffect(()=>{
+  myAxios.get("/course/").then((res)=>{
+    console.log(res.data)
+    setdata(res.data);
+    
+  }).catch((error)=>console.log(error))
+},[])
   const [showBasic, setShowBasic] = useState(false);
 
   return (
     <MDBNavbar expand='lg' light bgColor='light'>
       <MDBContainer fluid>
-        <MDBNavbarBrand href='#'>Brand</MDBNavbarBrand>
+        <MDBNavbarBrand href='/home'>Student Management</MDBNavbarBrand>
 
         <MDBNavbarToggler
           aria-controls='navbarSupportedContent'
@@ -49,7 +58,7 @@ export default function App() {
             <MDBNavbarItem>
               <MDBDropdown>
                 <MDBDropdownToggle tag='a' className='nav-link' role='button'>
-                  Dropdown
+                  Menu
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
                   <MDBDropdownItem link onClick={()=>{
@@ -57,16 +66,46 @@ export default function App() {
                   }}>Admin Login</MDBDropdownItem>
                   <MDBDropdownItem link onClick={()=>
                   navigate("/studentlogin")}>Student Login</MDBDropdownItem>
-                  <MDBDropdownItem link>Something else here</MDBDropdownItem>
+                  <MDBDropdownItem link onClick={()=>{
+                    navigate("/contactus")
+                  }}>Contact-us</MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
             </MDBNavbarItem>
 
+            <MDBNavbarItem> 
+            <MDBDropdown>
+                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
+                  Courses
+                </MDBDropdownToggle>
+                <MDBDropdownMenu>
+                 {
+                  cdata.map((item,index)=>{
+             return<MDBDropdownItem key={index} link onClick={()=>{
+                      navigate(`/course/${item.name}`)
+                    }}>{item.name}</MDBDropdownItem>
+})
+                 }
+                 </MDBDropdownMenu>
+                </MDBDropdown>
+                </MDBNavbarItem> 
+
+
             <MDBNavbarItem>
-              <MDBNavbarLink disabled href='#' tabIndex={-1} aria-disabled='true'>
-                Disabled
+              <MDBNavbarLink  href='#' tabIndex={-1} aria-disabled='true'>
+          
               </MDBNavbarLink>
             </MDBNavbarItem>
+            <MDBNavbarItem>
+              <MDBNavbarLink  href='' tabIndex={-1} aria-disabled='true' style={{marginLeft:300}}>
+              { (!(sessionStorage.getItem("isloggedin")||sessionStorage.getItem("studlog")))?(
+          <button className='btn btn-primary' onClick={()=>navigate('/studentlogin')} style={{height:35}}>Login</button>
+              )
+               :(<button className='btn btn-primary' onClick={()=>navigate('/logout')} style={{height:35}}>Logout</button>
+               )}
+               </MDBNavbarLink>
+            </MDBNavbarItem>
+            
           </MDBNavbarNav>
 
           <form className='d-flex input-group w-auto'>
