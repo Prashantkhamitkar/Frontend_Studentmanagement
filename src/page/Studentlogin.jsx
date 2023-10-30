@@ -5,8 +5,23 @@ import React, { useState } from 'react';
 import { myAxios } from '../services/helper';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import "../page/Model.css"
+import "../page/Checkmark.css"
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import "../page/Button.css"
 function Studentlogin() {
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [email,setemail]=useState('');
+  const [otp,setotp]=useState('');
+  const [showforgetpassword,setshowforgetpassword]=useState(false)
+  const [password,setpassword]=useState({
+    password:''
+  })
+  const [showafterclick,setshowafterclick]=useState(false)
+const [resotp,setresotp]=useState('');
+const [verification,setverification]=useState('');
   const navigate =useNavigate();
+let isCorrectOTP=false;
     const [userdata,setdata]=useState({
       email:'',
       password:''
@@ -15,6 +30,9 @@ function Studentlogin() {
     const {name,value}=e.target;
     setdata({...userdata,[name]:value})
   }
+  const toggleNewPasswordVisibility = () => {
+    setShowNewPassword(!showNewPassword);
+  };
     const handleLogin = (e) => {
       e.preventDefault(); // Prevent the default form submission behavior
       // Handle the login logic here
@@ -51,10 +69,99 @@ function Studentlogin() {
             
         }
     );
+
     })
      
     };
-  
+    const handlevent=()=>{
+setshowforgetpassword(true)
+    }
+  const sendresetpassword=()=>{
+console.log(email);
+myAxios.get(`/student/send/${email}`).then((res)=>{
+  console.log(res.data)
+  setresotp(res.data);
+  Swal.fire(
+    {
+        title:'success',
+        text:'Enter OTP',
+        timer:1000,
+        icon:'success'
+        
+    })
+
+}).catch((error)=>{
+  console.log(error)
+  setshowforgetpassword(true)
+  setshowafterclick(false)
+  Swal.fire(
+    {
+        title:'Error!',
+        text:'something went wrong',
+        timer:5000,
+        icon:'error'
+        
+    })
+
+})
+setshowafterclick(true)
+setshowforgetpassword(false)
+  }
+  const changepassword=()=>{
+console.log(password);
+console.log(resotp);
+myAxios.post(`/student/send/${email}`,password,{
+  headers:{
+    "Content-Type":"application/json"
+  }
+}).then((res)=>{
+  console.log(res.data);
+  Swal.fire(
+    {
+        title:'successfully updated password ',
+        text:'Success',
+        timer:3000,
+        icon:'success'
+        
+    })
+    setshowafterclick(false)
+}).catch((error)=>{
+  console.log(error);
+  Swal.fire(
+    {
+        title:'Error!',
+        text:'something went wrong',
+        timer:5000,
+        icon:'error'
+        
+    })
+})
+
+  }
+  const handleotp=(e) => {
+    e.preventDefault();
+    
+    const inputotp=e.target.value;
+    setotp(inputotp);
+    //console.log(inputotp);
+    if(resotp.toString()===inputotp){
+    
+      setverification("OTP is Correct");
+       
+    }
+    else{
+      setverification("OTP is Incorrect please enter correct ");
+    
+    }
+     
+  }
+  const handlepassword=(e)=>{
+    const {name,value}=e.target;
+    setpassword({...password,[name]:value})
+  }
+ 
+    isCorrectOTP=(verification==="OTP is Correct");
+   let inputclass=(isCorrectOTP?'correct':'');
     return (<>
       <section className="vh-100">
 <div className="container-fluid h-custom">
@@ -75,14 +182,14 @@ function Studentlogin() {
 
         
         <div className="form-outline mb-4">
-          <input type="email"  id="email" placeholder="name@example.com" name='email' value={userdata.email} onChange={handelchange} className="form-control form-control-lg"
+          <input type="email" required id="email" placeholder="name@example.com" name='email' value={userdata.email} onChange={handelchange} className="form-control form-control-lg"
              />
           <label className="form-label" for="form3Example3">Email address</label>
         </div>
 
        
         <div className="form-outline mb-3">
-          <input type="password" name="password" id="password" placeholder="Password" value={userdata.password} onChange={handelchange} className="form-control form-control-lg"
+          <input type="password" required name="password" id="password" placeholder="Password" value={userdata.password} onChange={handelchange} className="form-control form-control-lg"
              />
           <label className="form-label" for="form3Example4">Password</label>
         </div>
@@ -95,7 +202,7 @@ function Studentlogin() {
               Remember me
             </label>
           </div>
-          <a href="#!" className="text-body">Forgot password?</a>
+          <Link onClick={handlevent}>Forgot password?</Link>
         </div>
 
         <div className="text-center text-lg-start mt-4 pt-2">
@@ -132,7 +239,71 @@ function Studentlogin() {
   </div>
   
 </div>
-</section></>
+{showforgetpassword&&(<div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setshowforgetpassword(false)}>
+              &times;
+            </span>
+            <h2>Forgot Password</h2>
+            <p>Enter your email to reset your password:</p>
+            <input
+              type="email"
+              placeholder="Enter your Email"
+              value={email}
+              required
+              onChange={(e) => setemail(e.target.value)}
+            />
+            <button onClick={sendresetpassword}>Send Email</button>
+          </div>
+        </div>
+      )}
+      {showafterclick&&(<div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setshowafterclick(false)}>
+              &times;
+            </span>
+            <h2>change Password</h2>
+            <p>Enter OTP to verify your email:</p>
+            <input
+  type="text"
+  placeholder="Enter OTP"
+  value={otp}
+  required
+  onChange={handleotp}
+  className={inputclass}
+/>
+
+{isCorrectOTP && (
+  <div className="checkmark">&#10003;</div>
+)}
+
+<div className="password-input-container">
+  <input
+    type={showNewPassword ? 'text' : 'password'}
+    placeholder="Enter your new password"
+    value={password.password}
+    required
+    name='password'
+    onChange={handlepassword}
+  />
+  <button
+    type="button"
+    className="password-toggle"
+    onClick={toggleNewPasswordVisibility}
+  >
+    {showNewPassword ? <FaEyeSlash style={{ color: 'black' }}/> : <FaEye style={{ color: 'black' }}/>}
+  </button>
+</div>
+            <button onClick={changepassword}>Change Password</button>
+          </div>
+        </div>
+      )}
+</section>
+
+
+
+
+</>
         
     //  <form onSubmit={handleLogin}>
     //     <div className="container">

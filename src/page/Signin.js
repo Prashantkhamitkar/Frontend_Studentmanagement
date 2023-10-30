@@ -106,7 +106,7 @@ const Signin=()=>{
               Remember me
             </label>
           </div>
-          <a href="#!" className="text-body">Forgot password?</a>
+          
         </div>
 
         <div className="text-center text-lg-start mt-4 pt-2">
