@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Studentsignup from '../services/Studentsignup';
 import { useNavigate } from 'react-router-dom';
-
+import "../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
 
 const Student=()=> 
@@ -45,7 +45,7 @@ navigate("/student")
   };
 
   return (
-    <div className='container'>
+    <div >
       <h2>Student Signup</h2>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="form-group">

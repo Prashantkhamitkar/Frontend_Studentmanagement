@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { BASE_URL, myAxios } from "../services/helper";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import '../page/TableComponent.css';
-import Update from "./Update";
+
 import { useNavigate } from "react-router-dom";
 import "../../node_modules/react-toastify/dist/ReactToastify.css"
 import { toast,ToastContainer } from "react-toastify";
-import Swal from "sweetalert2";
+
 import Signin from "./Signin";
 
 //import { useNavigate } from "react-router-dom";
@@ -98,7 +98,7 @@ return ( <>
               <td>{item.lastname}</td>
               <td>{item.email}</td>
               <td>{item.mobilenumber}</td>
-              <td><img src={`${imgurl}/${item.imagename}`} alt="student image" style={{width:"100px",height:"100px",objectFit:"cover",borderRadius:"50%"}}></img></td>
+              <td><img src={`${imgurl}/${item.imagename}`} alt="" style={{width:"100px",height:"100px",objectFit:"cover",borderRadius:"50%"}}/></td>
               <td><button onClick={()=>deleteitem(item.id)} className="btn btn-danger">Delete</button></td>
               <td><button onClick={()=>updateitem(item.id)} className="btn btn-info">Update</button></td>
                 </tr>

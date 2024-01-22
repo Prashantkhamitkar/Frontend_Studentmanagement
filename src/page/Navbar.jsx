@@ -29,7 +29,7 @@ useEffect(()=>{
   }).catch((error)=>console.log(error))
 },[])
   const [showBasic, setShowBasic] = useState(false);
-
+console.log(sessionStorage.getItem("studlog"));
   return (
     <MDBNavbar expand='lg' light bgColor='light'>
       <MDBContainer fluid>
@@ -47,22 +47,22 @@ useEffect(()=>{
         <MDBCollapse navbar show={showBasic}>
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
             <MDBNavbarItem>
-              <MDBNavbarLink active aria-current='page' href='/home'>
+              <MDBNavbarLink active aria-current='page' href='/' style={{marginLeft:"10px"}}>
                 Home
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href='/signin'>Student Section</MDBNavbarLink>
+              <MDBNavbarLink href='/signin'style={{ whiteSpace: 'nowrap' }} >Student-Section</MDBNavbarLink>
             </MDBNavbarItem>
 
             <MDBNavbarItem>
               <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
+                <MDBDropdownToggle tag='a' className='nav-link' role='button' style={{marginLeft:"10px"}}>
                   Menu
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
                   <MDBDropdownItem link onClick={()=>{
-                    navigate("/")
+                    navigate("/login")
                   }}>Admin Login</MDBDropdownItem>
                   <MDBDropdownItem link onClick={()=>
                   navigate("/studentlogin")}>Student Login</MDBDropdownItem>
@@ -86,18 +86,37 @@ useEffect(()=>{
                     }}>{item.name}</MDBDropdownItem>
 })
                  }
+                 
                  </MDBDropdownMenu>
                 </MDBDropdown>
+              
                 </MDBNavbarItem> 
-
-
+                {(sessionStorage.getItem("studlog"))?
+               ( <MDBNavbarItem> 
+            <MDBDropdown>
+                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
+                 Enroll-Course
+                </MDBDropdownToggle>
+                <MDBDropdownMenu>
+                 {
+                  cdata.map((item,index)=>{
+             return<MDBDropdownItem key={index} link onClick={()=>{
+                      navigate(`/confirm/${item.name}`)
+                    }}>{item.name}</MDBDropdownItem>
+})
+                 }
+                 </MDBDropdownMenu>
+                </MDBDropdown>
+                </MDBNavbarItem> ):null
+}
+             
             <MDBNavbarItem>
               <MDBNavbarLink  href='#' tabIndex={-1} aria-disabled='true'>
           
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink  href='' tabIndex={-1} aria-disabled='true' style={{marginLeft:300}}>
+              <MDBNavbarLink  href='' tabIndex={-1} aria-disabled='true' style={{marginLeft:200}}>
               { (!(sessionStorage.getItem("isloggedin")||sessionStorage.getItem("studlog")))?(
           <button className='btn btn-primary' onClick={()=>navigate('/studentlogin')} style={{height:35}}>Login</button>
               )

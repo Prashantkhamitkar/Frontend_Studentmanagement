@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { myAxios } from "../services/helper";
 import "../page/Course.css"
 import "../page/Table.css"
+import "../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 const Course=()=>{
 const {name}=useParams();
 const [showPopup, setShowPopup] = useState(false);
@@ -78,7 +79,7 @@ return (<>
 <br></br>
 <div className="row row-cols-1 row-cols-md-3 g-4">
 <div className="col">
-  <div className="card h-100">
+  <div className="cards h-100">
     <img src={fullurl} className="card-img-top" alt="Skyscrapers"/>
     <div className="card-body">
       <h5 className="card-title" style={{fontSize:"25px"}}>Course : {cdata.name}</h5>
@@ -131,7 +132,7 @@ return (<>
   </div>
 </div>
 <div className="col">
-  <div className="card h-100">
+  <div className="cards h-100">
     <img src={fullurl1} className="card-img-top" alt="Los Angeles Skyscrapers"/>
     <div className="card-body">
       <h5 className="card-title">Prerequisites </h5>
@@ -143,7 +144,7 @@ return (<>
   </div>
 </div>
 <div className="col">
-  <div className="card h-100">
+  <div className="cards h-100">
     <img src={fullurl2} className="card-img-top" alt="Palm Springs Road"/>
     <div className="card-body">
       <h5 className="card-title">Descriptions </h5>

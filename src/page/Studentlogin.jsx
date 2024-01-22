@@ -17,6 +17,7 @@ function Studentlogin() {
   const [password,setpassword]=useState({
     password:''
   })
+  const [error, setError] = useState('');
   const [showafterclick,setshowafterclick]=useState(false)
 const [resotp,setresotp]=useState('');
 const [verification,setverification]=useState('');
@@ -46,6 +47,7 @@ let isCorrectOTP=false;
     }).then((res)=>{
        console.log(res.data)
        sessionStorage.setItem("studlog",true)
+       sessionStorage.setItem("id",res.data.id);
        Swal.fire(
         {
             title:'Success!',
@@ -59,6 +61,7 @@ let isCorrectOTP=false;
     
     navigate(`/details/${res.data.id}`)
     }).catch((e)=>{console.log(e)
+      setError('Enter valid credentials');
       console.log(userdata)
       Swal.fire(
         {
@@ -78,9 +81,14 @@ setshowforgetpassword(true)
     }
   const sendresetpassword=()=>{
 console.log(email);
+if (!email) {
+  setError('Email is required');
+  return;
+}
 myAxios.get(`/student/send/${email}`).then((res)=>{
   console.log(res.data)
   setresotp(res.data);
+  setError('');
   Swal.fire(
     {
         title:'success',
@@ -94,6 +102,7 @@ myAxios.get(`/student/send/${email}`).then((res)=>{
   console.log(error)
   setshowforgetpassword(true)
   setshowafterclick(false)
+  setError('Something went wrong');
   Swal.fire(
     {
         title:'Error!',
@@ -110,12 +119,24 @@ setshowforgetpassword(false)
   const changepassword=()=>{
 console.log(password);
 console.log(resotp);
+if (!otp || !password.password) {
+  setError('OTP and Password are required');
+  
+  Swal.fire({
+    title:'Warning',
+    text:'Enter the Required field',
+    timer:5000,
+    icon:'warning'
+  })
+  return;
+}
 myAxios.post(`/student/send/${email}`,password,{
   headers:{
     "Content-Type":"application/json"
   }
 }).then((res)=>{
   console.log(res.data);
+  setError('');
   Swal.fire(
     {
         title:'successfully updated password ',
@@ -127,6 +148,7 @@ myAxios.post(`/student/send/${email}`,password,{
     setshowafterclick(false)
 }).catch((error)=>{
   console.log(error);
+  setError('Something went wrong');
   Swal.fire(
     {
         title:'Error!',

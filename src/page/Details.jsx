@@ -27,7 +27,7 @@ function Details() {
  useEffect(()=>{
     myAxios.get(`/student/${id}`).then((res)=>{
         console.log(res.data);
-        console.log(id);
+       
         setdata(res.data);
           }).catch((error)=>console.log(error))
  },[])
@@ -60,7 +60,7 @@ setadata({...adata,[name]:value})
 }
 if(sessionStorage.getItem("studlog"))
     return ( <><div className="container">
-    <h1 className="mb-4">Student Profile</h1>
+   
     {sdata ? (
       <div>
      
@@ -68,16 +68,13 @@ if(sessionStorage.getItem("studlog"))
   <div className="row">
     <div className="col">
     <div className="card" style={{width:"300px"}}>
-  <img className="card-img-top" src={`${baseurl}/student/image/${sdata.imagename}`}  style={{width:"300px",height:"300px",objectFit:"cover"}} alt="Card image cap"/>
-  <div className="card-body">
-    <h5 className="card-title">{sdata.firstname} {sdata.lastname}</h5>
-   <br></br>
-    <p className="card-text"><strong>Email: {sdata.email}</strong>
-    <p><strong>Mobile: {sdata.mobilenumber}</strong></p>
-    <p><strong></strong></p>
-    </p>
-    <a href="#" className="btn btn-primary">Update Profile</a>
-  </div>
+  <img className="card-img-top" src={`${baseurl}/student/image/${sdata.imagename}`}  style={{width:"290px",height:"290px",objectFit:"contain"}} alt=""/>
+  <h2 style={{font:"5px",color:"black",fontFamily:"fantasy"}}>{sdata.firstname} {sdata.lastname}</h2>
+   <h5 style={{font:"1px",color:"black",fontFamily:"serif"}}>Email: {sdata.email}</h5>
+    <h5 style={{font:"1px",color:"black",fontFamily:"unset"}}>Mobile: {sdata.mobilenumber}</h5>
+
+  <a href="/update" className="btn btn-primary">Update Profile</a>
+  
 </div>
     </div>
     <div className="col">

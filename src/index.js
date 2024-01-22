@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import Navbar from './page/Navbar';
-import Carosal from './page/Carosal';
+
 
 
 
@@ -13,7 +13,7 @@ root.render(
     
   <BrowserRouter>
   <Navbar></Navbar>
-  {/* <Carosal></Carosal> */}
+{/* <Carosal></Carosal>  */}
   <App />
   </BrowserRouter>
     
